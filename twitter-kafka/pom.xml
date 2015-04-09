@@ -14,7 +14,7 @@
 		<encoding>UTF-8</encoding>
 		<scala.version>2.10.0</scala.version>
 		<scala.main>com.radcheb.App</scala.main>
-		<java.main>com.radcheb.twitterkafka.App</java.main>
+		<java.main>com.radcheb.twitterkafka.KafkaThreadProducer</java.main>
 	</properties>
 
 
@@ -133,6 +133,8 @@
 						<mainClass>${java.main}</mainClass>
 					<!-- optional -->
 					<arguments>
+					<argument>0</argument>
+					<argument>pom.xml</argument>
 					</arguments>
 				</configuration>
 			</plugin>
