@@ -33,8 +33,7 @@ public class KafkaThreadProducer {
 
 			LOGGER.debug("Setting up connections");
 			LOGGER.debug("Setting up file reader");
-			
-			BufferedTwitterReader reader = new BufferedTwitterReader(input);
+			BufferedTwitterReader reader = new BufferedTwitterReader( input);
 			LOGGER.debug("Setting up kafka producer");
 			KafkaProducer kafkaProducer = new KafkaProducer(
 					KafkaParams.KAFKA_TOPIC_VALUE, send);
@@ -45,9 +44,9 @@ public class KafkaThreadProducer {
 
 			source.start();
 			kafka.start();
+			kafka.join();
 
 			LOGGER.debug("Joining");
-			kafka.join();
 		} catch (IOException ex) {
 			LOGGER.fatal("IO Error while piping", ex);
 			LOGGER.trace(null, ex);
@@ -76,9 +75,9 @@ public class KafkaThreadProducer {
 
 			source.start();
 			kafka.start();
+			kafka.join();
 
 			LOGGER.debug("Joining");
-			kafka.join();
 		} catch (IOException ex) {
 			LOGGER.fatal("IO Error while piping", ex);
 			LOGGER.trace(null, ex);

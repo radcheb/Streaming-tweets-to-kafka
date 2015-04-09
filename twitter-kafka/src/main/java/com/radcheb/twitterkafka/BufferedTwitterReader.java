@@ -16,17 +16,17 @@ import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class BufferedTwitterReader implements Runnable, StatusListener{
-	private final Logger LOGGER = Logger.getLogger(BufferedFileReader.class);
+public class BufferedTwitterReader implements Runnable, StatusListener {
+	private final Logger LOGGER = Logger.getLogger(BufferedTwitterReader.class);
 	private final Charset ENC = Charset.forName("UTF-8");
 	private OutputStream outputStream = null;
 	private String confFile = "src/main/resources/twitter4j.properties";
 	BufferedWriter wd = null;
 
-    /** The actual Twitter stream. It's set up to collect raw JSON data */
-    private TwitterStream twitterStream;
-    
-    public BufferedTwitterReader(OutputStream stream) {
+	/** The actual Twitter stream. It's set up to collect raw JSON data */
+	private TwitterStream twitterStream;
+
+	public BufferedTwitterReader(OutputStream stream) {
 		this.outputStream = stream;
 		setStream();
 	}
@@ -37,8 +37,8 @@ public class BufferedTwitterReader implements Runnable, StatusListener{
 		setStream();
 	}
 
-	private void setStream(){
-		
+	private void setStream() {
+
 		TwitterParams params = null;
 		try {
 			params = new TwitterParams(confFile);
@@ -48,10 +48,12 @@ public class BufferedTwitterReader implements Runnable, StatusListener{
 
 		/** Twitter properties **/
 		String consumerKey = params.getString(TwitterParams.CONSUMER_KEY_KEY);
-		String consumerSecret = params.getString(TwitterParams.CONSUMER_SECRET_KEY);
+		String consumerSecret = params
+				.getString(TwitterParams.CONSUMER_SECRET_KEY);
 		String accessToken = params.getString(TwitterParams.ACCESS_TOKEN_KEY);
-		String accessTokenSecret = params.getString(TwitterParams.ACCESS_TOKEN_SECRET_KEY);
- 
+		String accessTokenSecret = params
+				.getString(TwitterParams.ACCESS_TOKEN_SECRET_KEY);
+
 		ConfigurationBuilder conf = new ConfigurationBuilder();
 		conf.setOAuthConsumerKey(consumerKey);
 		conf.setOAuthConsumerSecret(consumerSecret);
@@ -65,15 +67,8 @@ public class BufferedTwitterReader implements Runnable, StatusListener{
 	}
 
 	public void run() {
-		try {
-				wd = new BufferedWriter(new OutputStreamWriter(
-						this.outputStream, ENC));
-		} catch (Exception ex) {
-			LOGGER.fatal("Error while reading file", ex);
-			LOGGER.trace("", ex);
-		}
-		twitterStream.sample();  
-}
+		twitterStream.sample();
+	}
 
 	@Override
 	public void onException(Exception arg0) {
@@ -90,37 +85,40 @@ public class BufferedTwitterReader implements Runnable, StatusListener{
 	@Override
 	public void onDeletionNotice(StatusDeletionNotice arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onScrubGeo(long arg0, long arg1) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onStallWarning(StallWarning arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onStatus(Status status) {
 		String text = status.getText();
 		String lang = status.getLang();
-		if(lang=="en"){
+		if (lang.equals("en")) {
 			try {
-				wd.write(lang+" :: "+text);
+				this.outputStream.write((lang + " :: " + text + "\n")
+						.getBytes());
 			} catch (IOException e) {
 				LOGGER.info(e);
-			}		
+			}
+
 		}
+
 	}
 
 	@Override
 	public void onTrackLimitationNotice(int arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
