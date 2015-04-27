@@ -28,7 +28,7 @@ public class KafkaThreadProducer {
 	private static void produceFromTwitter() {
 		try {
 			LOGGER.debug("Setting up streams");
-			PipedInputStream send = new PipedInputStream(BUFFER_LEN);
+			PipedInputStream send = new PipedInputStream();
 			PipedOutputStream input = new PipedOutputStream(send);
 
 			LOGGER.debug("Setting up connections");

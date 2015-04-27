@@ -137,7 +137,7 @@
 					<!-- optional -->
 					<arguments>
 						<argument>1</argument>
-						<argument>src/main/resources/twitter4j.properties</argument>
+						<argument>test</argument>
 					</arguments>
 				</configuration>
 			</plugin>

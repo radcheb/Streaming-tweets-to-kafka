@@ -12,6 +12,7 @@ import twitter4j.StallWarning;
 import twitter4j.Status;
 import twitter4j.StatusDeletionNotice;
 import twitter4j.StatusListener;
+import twitter4j.TwitterObjectFactory;
 import twitter4j.TwitterStream;
 import twitter4j.TwitterStreamFactory;
 import twitter4j.conf.ConfigurationBuilder;
@@ -102,17 +103,19 @@ public class BufferedTwitterReader implements Runnable, StatusListener {
 
 	@Override
 	public void onStatus(Status status) {
-		String text = status.getText();
-		String lang = status.getLang();
-		if (lang.equals("en")) {
-			try {
-				this.outputStream.write((lang + " :: " + text + "\n")
-						.getBytes());
-			} catch (IOException e) {
-				LOGGER.info(e);
-			}
+//		String text = status.getText();
+//		String lang = status.getLang();
+		// if (lang.equals("en")) {
+		try {
 
+			this.outputStream.write((TwitterObjectFactory.getRawJSON(status)+"\n").getBytes());
+			// this.outputStream.write((lang + " :: " + text + "\n")
+			// .getBytes());
+		} catch (IOException e) {
+			LOGGER.info(e);
 		}
+
+		// }
 
 	}
 
